@@ -29,7 +29,7 @@ type (
 // FetchAllAuditLogEntries returns all audit log entries for the specified organisation.
 func (c *Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, error) {
 	var auditEntries []AuditEntry
-	var endCursor *string // Using a pointer type allows this to be nil.
+	var endCursor *string // Using a pointer type allows this to be nil (an empty string isn't a valid cursor).
 
 	req := graphql.NewRequest(`
 		query GitHubAuditEntries($login: String!, $after: String) {
