@@ -29,7 +29,7 @@ type (
 // FetchAllAuditLogEntries returns all audit log entries for the specified organisation.
 func (c *Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, error) {
 	var auditEntries []AuditEntry
-	var next *string // Allow it to be nil
+	var endCursor *string // Using a pointer type allows this to be nil.
 
 	req := graphql.NewRequest(`
 		query GitHubAuditEntries($login: String!, $after: String) {
@@ -66,14 +66,14 @@ func (c *Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, err
 	for hasNextPage {
 		page++
 		res := &struct{ Organization Organization }{}
-		req.Var("after", next)
+		req.Var("after", endCursor)
 
 		if err := c.Run(req, &res); err != nil {
 			return nil, errors.Wrap(err, "failed to fetch audit log entries for organisation")
 		}
 
 		auditEntries = append(auditEntries, res.Organization.AuditLog.Nodes...)
-		next = &res.Organization.AuditLog.PageInfo.EndCursor
+		endCursor = &res.Organization.AuditLog.PageInfo.EndCursor
 		hasNextPage = res.Organization.AuditLog.PageInfo.HasNextPage
 	}
 
