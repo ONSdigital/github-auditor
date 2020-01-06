@@ -9,11 +9,14 @@ type (
 
 	// AuditEntry represents an entry in the GitHub audit log.
 	AuditEntry struct {
-		ID         string `json:"id"`
-		Action     string `json:"action"`
-		ActorLogin string `json:"actorLogin"`
-		CreatedAt  string `json:"createdAt"`
-		UserLogin  string `json:"userLogin,omitempty"`
+		ID             string `json:"id"`
+		Action         string `json:"action"`
+		ActorLogin     string `json:"actorLogin"`
+		CreatedAt      string `json:"createdAt"`
+		UserLogin      string `json:"userLogin,omitempty"`
+		RepositoryName string `json:"repositoryName,omitempty"`
+		TeamName       string `json:"teamName,omitempty"`
+		Visibility     string `json:"visibility,omitempty"`
 	}
 
 	// Organization represents a GitHub organisation.
@@ -46,12 +49,64 @@ func (c Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, erro
 						... on Node {
 							id
 						}
+						# An entry in the audit log.
 						... on AuditEntry {
 							action
 							actorLogin
 							createdAt
-							userLogin
+							userLogin							
 						}
+						# Triggered when a repository owned by an organisation is switched from private to public (or vice-versa).
+						... on RepoAccessAuditEntry { 
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+							visibility						
+						}
+						# Triggered when a user accepts an invitation to have collaboration access to a repository.
+						... on RepoAddMemberAuditEntry {
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+						}
+						# Triggered when a new repository is created.
+						... on RepoCreateAuditEntry {
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+						}
+						# Triggered when a repository is deleted.
+						... on RepoDestroyAuditEntry {
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+						}						
+						# Triggered when a team is given control of a repository.
+						... on TeamAddRepositoryAuditEntry {
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+							teamName
+						}
+						# Triggered when a repository is no longer under a team's control.
+						... on TeamRemoveRepositoryAuditEntry {
+							action
+							actorLogin
+							createdAt
+							userLogin
+							repositoryName
+							teamName
+						}											
 					}
 				}
 			}
