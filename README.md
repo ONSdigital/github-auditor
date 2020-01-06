@@ -19,4 +19,4 @@ The GitHub personal access token for using this application requires the followi
 - `user`
 
 ## Copyright
-Copyright (C) 2019 Crown Copyright (Office for National Statistics)
+Copyright (C) 2020 Crown Copyright (Office for National Statistics)
