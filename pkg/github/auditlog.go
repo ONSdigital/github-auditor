@@ -1,7 +1,7 @@
 package github
 
 import (
-	"github.com/machinebox/graphql"
+	"github.com/ONSdigital/graphql"
 	"github.com/pkg/errors"
 )
 

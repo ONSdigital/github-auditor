@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 
-	"github.com/machinebox/graphql"
+	"github.com/ONSdigital/graphql"
 )
 
 type (
