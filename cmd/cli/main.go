@@ -25,9 +25,9 @@ func main() {
 		log.Fatal("Missing SLACK_WEBHOOK environment variable")
 	}
 
-	client := github.NewClient(token)
+	gitHubClient := github.NewClient(token)
 
-	auditEntries, err := client.FetchAllAuditLogEntries(organisation)
+	auditEntries, err := gitHubClient.FetchAllAuditLogEntries(organisation)
 	if err != nil {
 		log.Fatalf("Failed to fetch audit log entries: %v", err)
 	}
