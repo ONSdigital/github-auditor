@@ -20,6 +20,11 @@ func main() {
 		log.Fatal("Missing GITHUB_ORG_NAME environmental variable")
 	}
 
+	slackWebHook := ""
+	if slackWebHook = os.Getenv("SLACK_WEBHOOK"); len(slackWebHook) == 0 {
+		log.Fatal("Missing SLACK_WEBHOOK environment variable")
+	}
+
 	client := github.NewClient(token)
 
 	auditEntries, err := client.FetchAllAuditLogEntries(organisation)
