@@ -10,6 +10,7 @@ type (
 	// Node represents a node in the returned results graph.
 	Node struct {
 		ID             string `json:"id"`
+		Type           string `json:"__typename"`
 		Action         string `json:"action"`
 		ActorLogin     string `json:"actorLogin"`
 		CreatedAt      string `json:"createdAt"`
@@ -47,6 +48,7 @@ func (c Client) FetchAllAuditLogEntries(organisation string) ([]Node, error) {
 					nodes {
 						... on Node {
 							id
+							__typename
 						}
 						# An entry in the audit log.
 						... on AuditEntry {
