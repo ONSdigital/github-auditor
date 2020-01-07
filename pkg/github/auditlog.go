@@ -7,8 +7,8 @@ import (
 
 type (
 
-	// AuditEntry represents an entry in the GitHub audit log.
-	AuditEntry struct {
+	// Node represents a node in the returned results graph.
+	Node struct {
 		ID             string `json:"id"`
 		Action         string `json:"action"`
 		ActorLogin     string `json:"actorLogin"`
@@ -24,14 +24,13 @@ type (
 		AuditLog struct {
 			TotalCount int
 			PageInfo   PageInfo
-			Nodes      []AuditEntry
+			Nodes      []Node
 		}
 	}
 )
 
 // FetchAllAuditLogEntries returns all audit log entries for the specified organisation.
-func (c Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, error) {
-	var auditEntries []AuditEntry
+func (c Client) FetchAllAuditLogEntries(organisation string) ([]Node, error) {
 	var endCursor *string // Using a pointer type allows this to be nil (an empty string isn't a valid cursor).
 
 	req := graphql.NewRequest(`
@@ -117,6 +116,7 @@ func (c Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, erro
 
 	page := 0
 	hasNextPage := true
+	var nodes []Node
 
 	for hasNextPage {
 		page++
@@ -127,10 +127,10 @@ func (c Client) FetchAllAuditLogEntries(organisation string) ([]AuditEntry, erro
 			return nil, errors.Wrap(err, "failed to fetch audit log entries for organisation")
 		}
 
-		auditEntries = append(auditEntries, res.Organization.AuditLog.Nodes...)
+		nodes = append(nodes, res.Organization.AuditLog.Nodes...)
 		endCursor = &res.Organization.AuditLog.PageInfo.EndCursor
 		hasNextPage = res.Organization.AuditLog.PageInfo.HasNextPage
 	}
 
-	return auditEntries, nil
+	return nodes, nil
 }
