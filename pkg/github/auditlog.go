@@ -32,7 +32,7 @@ type (
 	}
 )
 
-// FetchAllAuditEvents returns all audit log events for the specified organisation.
+// FetchAllAuditEvents returns all audit log events for the passed organisation.
 func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err error) {
 	var endCursor *string // Using a pointer type allows this to be nil (an empty string isn't a valid cursor).
 
@@ -64,6 +64,12 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							createdAt
 							oauthApplicationName
 							organizationName
+						}
+						... on RepoAddMemberAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
 						}										
 					}
 				}

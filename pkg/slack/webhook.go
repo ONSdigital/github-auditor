@@ -58,13 +58,13 @@ type Payload struct {
 	Markdown    bool         `json:"mrkdwn,omitempty"`
 }
 
-// AddAction adds the specified Slack message action to a Slack message attachment.
+// AddAction adds the passed Slack message action to a Slack message attachment.
 func (attachment *Attachment) AddAction(action Action) *Attachment {
 	attachment.Actions = append(attachment.Actions, &action)
 	return attachment
 }
 
-// AddField adds the specified Slack message field to a Slack message attachment.
+// AddField adds the passed Slack message field to a Slack message attachment.
 func (attachment *Attachment) AddField(field Field) *Attachment {
 	attachment.Fields = append(attachment.Fields, &field)
 	return attachment
@@ -74,7 +74,7 @@ func redirectPolicyFunc(req gorequest.Request, via []gorequest.Request) error {
 	return fmt.Errorf("Incorrect token (redirection)")
 }
 
-// Send posts the specified payload to the specified Slack webhook URL.
+// Send POSTS the passed payload to the passed Slack webhook URL.
 func Send(webHookURL string, payload Payload) []error {
 	request := gorequest.New()
 	resp, _, err := request.Post(webHookURL).RedirectPolicy(redirectPolicyFunc).Send(payload).End()

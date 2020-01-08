@@ -11,7 +11,7 @@ import (
 
 const slackRateLimitPause = 3 * time.Second
 
-// Process does something
+// Process processes the passed slice of GitHub audit events, creating Slack alerts in the passed Slack channel for events of interest.
 func Process(events []github.Node, slackAlertsChannel string, slackWebHookURL string) {
 	for _, e := range events {
 		switch e.Action {
