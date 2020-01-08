@@ -17,27 +17,37 @@ func Process(events []github.Node, slackAlertsChannel string, slackWebHookURL st
 		switch e.Action {
 		case "oauth_application.create":
 			text := fmt.Sprintf(github.MessageForEvent(e.Action), e.OauthApplicationName, e.OrganizationName, e.ActorLogin)
-			postSlackMessage(text, slackAlertsChannel, slackWebHookURL)
-		case "org.add_member":
-			text := fmt.Sprintf(github.MessageForEvent(e.Action), e.OauthApplicationName, e.OrganizationName, e.ActorLogin)
-			postSlackMessage(text, slackAlertsChannel, slackWebHookURL)
+			postSlackMessage(e.CreatedAt, text, slackAlertsChannel, slackWebHookURL)
+		case "repo.add_member":
+			text := fmt.Sprintf(github.MessageForEvent(e.Action), e.ActorLogin, e.RepositoryName)
+			postSlackMessage(e.CreatedAt, text, slackAlertsChannel, slackWebHookURL)
 		default:
 			log.Printf("Unknown GitHub event: %s", e.Action)
 		}
 	}
 }
 
-func postSlackMessage(text string, slackAlertsChannel string, slackWebHookURL string) {
+func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {
 	payload := slack.Payload{
-		Text:      text,
+		Text:      fmt.Sprintf("_%s_\n%s\n\n", formatTime(timestamp), text),
 		Username:  "GitHub Auditor Bot",
 		Channel:   slackAlertsChannel,
 		IconEmoji: ":github:",
 	}
 
 	time.Sleep(slackRateLimitPause)
+
 	err := slack.Send(slackWebHookURL, payload)
 	if err != nil {
 		log.Fatalf("Failed to send Slack message: %v", err)
 	}
+}
+
+func formatTime(s string) string {
+	t, err := time.Parse(time.RFC3339, s)
+	if err != nil {
+		log.Fatalf("Unable to parse time '%s': %v", t, err)
+	}
+
+	return t.Format("Monday 02 Jan 2006 15:04:05 MST")
 }
