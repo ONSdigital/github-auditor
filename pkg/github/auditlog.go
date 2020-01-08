@@ -9,15 +9,17 @@ type (
 
 	// Node represents a node in the returned results graph.
 	Node struct {
-		ID             string `json:"id"`
-		Type           string `json:"__typename"`
-		Action         string `json:"action"`
-		ActorLogin     string `json:"actorLogin"`
-		CreatedAt      string `json:"createdAt"`
-		UserLogin      string `json:"userLogin,omitempty"`
-		RepositoryName string `json:"repositoryName,omitempty"`
-		TeamName       string `json:"teamName,omitempty"`
-		Visibility     string `json:"visibility,omitempty"`
+		ID                   string `json:"id"`
+		Type                 string `json:"-"`
+		Action               string `json:"action"`
+		ActorLogin           string `json:"actorLogin"`
+		CreatedAt            string `json:"createdAt"`
+		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
+		OrganizationName     string `json:"organizationName,omitempty"`
+		UserLogin            string `json:"userLogin,omitempty"`
+		RepositoryName       string `json:"repositoryName,omitempty"`
+		TeamName             string `json:"teamName,omitempty"`
+		Visibility           string `json:"visibility,omitempty"`
 	}
 
 	// Organization represents a GitHub organisation.
@@ -30,8 +32,8 @@ type (
 	}
 )
 
-// FetchAllAuditLogEntries returns all audit log entries for the specified organisation.
-func (c Client) FetchAllAuditLogEntries(organisation string) ([]Node, error) {
+// FetchAllAuditEvents returns all audit log events for the specified organisation.
+func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err error) {
 	var endCursor *string // Using a pointer type allows this to be nil (an empty string isn't a valid cursor).
 
 	req := graphql.NewRequest(`
@@ -50,64 +52,19 @@ func (c Client) FetchAllAuditLogEntries(organisation string) ([]Node, error) {
 							id
 							__typename
 						}
-						# An entry in the audit log.
 						... on AuditEntry {
 							action
 							actorLogin
 							createdAt
 							userLogin							
 						}
-						# Triggered when a repository owned by an organisation is switched from private to public (or vice-versa).
-						... on RepoAccessAuditEntry { 
+						... on OauthApplicationCreateAuditEntry {
 							action
 							actorLogin
 							createdAt
-							userLogin
-							repositoryName
-							visibility						
-						}
-						# Triggered when a user accepts an invitation to have collaboration access to a repository.
-						... on RepoAddMemberAuditEntry {
-							action
-							actorLogin
-							createdAt
-							userLogin
-							repositoryName
-						}
-						# Triggered when a new repository is created.
-						... on RepoCreateAuditEntry {
-							action
-							actorLogin
-							createdAt
-							userLogin
-							repositoryName
-						}
-						# Triggered when a repository is deleted.
-						... on RepoDestroyAuditEntry {
-							action
-							actorLogin
-							createdAt
-							userLogin
-							repositoryName
-						}						
-						# Triggered when a team is given control of a repository.
-						... on TeamAddRepositoryAuditEntry {
-							action
-							actorLogin
-							createdAt
-							userLogin
-							repositoryName
-							teamName
-						}
-						# Triggered when a repository is no longer under a team's control.
-						... on TeamRemoveRepositoryAuditEntry {
-							action
-							actorLogin
-							createdAt
-							userLogin
-							repositoryName
-							teamName
-						}											
+							oauthApplicationName
+							organizationName
+						}										
 					}
 				}
 			}
