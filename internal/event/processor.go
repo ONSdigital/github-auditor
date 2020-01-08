@@ -9,7 +9,7 @@ import (
 	"github.com/ONSdigital/github-auditor/pkg/slack"
 )
 
-const slackRateLimitPause = 3 * time.Second
+const slackRateLimitPause = 5 * time.Second
 
 // Process processes the passed slice of GitHub audit events, creating Slack alerts in the passed Slack channel for events of interest.
 func Process(events []github.Node, slackAlertsChannel string, slackWebHookURL string) {
