@@ -6,10 +6,12 @@ This repository contains a Go application that consumes the GraphQL GitHub audit
 The environment variables below are required:
 
 ```
-GITHUB_ORG_NAME      # Name of the GitHub Enterprise organisation
-GITHUB_TOKEN         # GitHub personal access token
-SLACK_ALERTS_CHANNEL # Name of the Slack channel to post alerts to
-SLACK_WEBHOOK        # Used for accessing the Slack Incoming Webhooks API
+FIRESTORE_CREDENTIALS # Path to the GCP service account JSON key
+FIRESTORE_PROJECT     # Name of the GCP project containing the Firestore project
+GITHUB_ORG_NAME       # Name of the GitHub Enterprise organisation
+GITHUB_TOKEN          # GitHub personal access token
+SLACK_ALERTS_CHANNEL  # Name of the Slack channel to post alerts to
+SLACK_WEBHOOK         # Used for accessing the Slack Incoming Webhooks API
 ```
 
 ### Token Scopes

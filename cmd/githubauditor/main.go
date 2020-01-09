@@ -11,6 +11,16 @@ import (
 )
 
 func main() {
+	firestoreCredentials := ""
+	if firestoreCredentials = os.Getenv("FIRESTORE_CREDENTIALS"); len(firestoreCredentials) == 0 {
+		log.Fatal("Missing FIRESTORE_CREDENTIALS environment variable")
+	}
+
+	firestoreProject := ""
+	if firestoreProject = os.Getenv("FIRESTORE_PROJECT"); len(firestoreProject) == 0 {
+		log.Fatal("Missing FIRESTORE_PROJECT environment variable")
+	}
+
 	token := ""
 	if token = os.Getenv("GITHUB_TOKEN"); len(token) == 0 {
 		log.Fatal("Missing GITHUB_TOKEN environmental variable")
@@ -37,7 +47,7 @@ func main() {
 		log.Fatalf("Failed to fetch audit log entries: %v", err)
 	}
 
-	event.Process(events, slackAlertsChannel, slackWebHookURL)
+	event.Process(events, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL)
 
 	json, err := json.MarshalIndent(events, "", "  ")
 	if err != nil {
