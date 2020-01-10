@@ -50,13 +50,12 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 					nodes {
 						... on Node {
 							id
-							__typename
 						}
 						... on AuditEntry {
 							action
 							actorLogin
 							createdAt
-							userLogin							
+							userLogin
 						}
 						... on OauthApplicationCreateAuditEntry {
 							action
@@ -65,12 +64,44 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							oauthApplicationName
 							organizationName
 						}
+						... on RepoAccessAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+							visibility
+						}
 						... on RepoAddMemberAuditEntry {
 							action
 							actorLogin
 							createdAt
 							repositoryName
-						}										
+						}
+						... on RepoArchivedAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+						}
+						... on RepoCreateAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+							visibility
+						}
+						... on RepoDestroyAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+						}
+						... on RepoRemoveMemberAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+						}
 					}
 				}
 			}

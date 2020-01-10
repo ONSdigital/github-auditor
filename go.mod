@@ -9,5 +9,6 @@ require (
 	github.com/pkg/errors v0.8.1
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
 	google.golang.org/api v0.14.0
+	google.golang.org/grpc v1.21.1
 	moul.io/http2curl v1.0.0 // indirect
 )

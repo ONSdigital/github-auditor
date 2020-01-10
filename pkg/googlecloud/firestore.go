@@ -6,6 +6,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type (
@@ -39,18 +41,27 @@ func NewClient(projectID, credentialsFile string) *Client {
 
 // DocExists returns whether the Firestore document with the passed ID containing the passed timestamp and action exists.
 func (c Client) DocExists(id, timestamp, action string) bool {
-	// snapshot, err := c.client.Collection(firestoreCollection).Doc(id).Get(context.Background())
-	// if err != nil {
-	// 	log.Fatalf("Failed to retrieve document %s/%s from Firestore: %v", firestoreCollection, id, err)
-	// }
+	snapshot, err := c.client.Collection(firestoreCollection).Doc(id).Get(*c.context)
+	if status.Code(err) == codes.NotFound {
+		return false
+	}
 
-	// data := snapshot.Data()
-	// if data == nil {
-	// 	return false
-	// }
+	data := snapshot.Data()
+	if data == nil {
+		return false
+	}
 
-	// id, err := snapshot.DataAt("id")
-	return false
+	ts, err := snapshot.DataAt("timestamp")
+	if err != nil && status.Code(err) != codes.NotFound {
+		log.Fatalf("Failed to retrieve timestamp value from Firestore document %s/%s: %v", firestoreCollection, id, err)
+	}
+
+	a, err := snapshot.DataAt("action")
+	if err != nil && status.Code(err) != codes.NotFound {
+		log.Fatalf("Failed to retrieve action value from Firestore document %s/%s: %v", firestoreCollection, id, err)
+	}
+
+	return timestamp == ts && action == a
 }
 
 // SaveDoc creates or updates the Firestore document with the passed ID, setting its contents to the passed timestamp and action.

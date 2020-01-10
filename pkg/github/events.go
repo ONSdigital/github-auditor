@@ -23,8 +23,12 @@ func MessageForEvent(action string) string {
 		"org.remove_billing_manager":         "Billing manager *%s* was removed from organisation *%s* because *%s*.",
 
 		// Repo events.
-		"repo.add_member": "*%s* accepted invitation to collaborate on repo *%s*.",
-		"repo.access":     "Repo *%s* changed visibility to *%s*.",
+		"repo.access":        "User *%s* changed visibility of repo *%s* to *%s*.",
+		"repo.add_member":    "User *%s* accepted invitation to collaborate on repo *%s*.",
+		"repo.archived":      "User *%s* archived repo *%s*.",
+		"repo.create":        "User *%s* created repo *%s* with visibility *%s*.",
+		"repo.destroy":       "User *%s* deleted repo *%s*.",
+		"repo.remove_member": "User *%s* was removed as a colloborator from repo *%s*.",
 	}
 
 	return eventMap[action]

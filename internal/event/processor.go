@@ -3,6 +3,7 @@ package event
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/ONSdigital/github-auditor/pkg/github"
@@ -23,14 +24,24 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		switch e.Action {
 		case "oauth_application.create":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, e.ActorLogin)
+		case "repo.access":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+		case "repo.archived":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+		case "repo.create":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName, strings.ToLower(e.Visibility))
+		case "repo.destroy":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+		case "repo.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
 		default:
 			log.Printf("Unknown GitHub event: %s", action)
 		}
 
 		client := firestore.NewClient(firestoreProject, firestoreCredentials)
-		if !client.DocExists(id, timestamp, action) {
+		if !client.DocExists(id, timestamp, action) && len(text) > 0 {
 			postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL)
 		}
 
