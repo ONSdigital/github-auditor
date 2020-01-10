@@ -23,27 +23,27 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 
 		switch e.Action {
 		case "oauth_application.create":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, e.ActorLogin)
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor))
 		case "org.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.UserLogin, e.OrganizationName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.OrganizationName)
 		case "repo.access":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName, strings.ToLower(e.Visibility))
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
 		case "repo.archived":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
 		case "repo.create":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName, strings.ToLower(e.Visibility))
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.destroy":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
 		case "repo.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
 		case "team.add_repository":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.TeamName, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.TeamName, e.RepositoryName)
 		case "team.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.UserLogin, e.TeamName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.TeamName)
 		case "team.remove_repository":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.TeamName, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.TeamName, e.RepositoryName)
 		default:
 			log.Printf("Unknown GitHub event: %s", action)
 		}
@@ -58,6 +58,25 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			log.Fatalf("Failed to save document to Firestore: %v", err)
 		}
 	}
+}
+
+func formatActor(actor github.Actor) string {
+	actorName := ""
+
+	switch actor.Type {
+	case "Bot":
+		actorName = fmt.Sprintf("bot *%s*", actor.Login)
+	case "Organization":
+		actorName = fmt.Sprintf("org *%s*", actor.Name)
+	case "User":
+		actorName = fmt.Sprintf("user *%s*", actor.Login)
+
+		if len(actor.Name) > 0 {
+			actorName = fmt.Sprintf("%s (%s)", actorName, actor.Name)
+		}
+	}
+
+	return actorName
 }
 
 func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {

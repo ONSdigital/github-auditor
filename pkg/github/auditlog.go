@@ -7,18 +7,24 @@ import (
 
 type (
 
+	// Actor represents the GitHub user who initiated the audit action.
+	Actor struct {
+		Type  string `json:"__typename"`
+		Login string `json:"login,omitempty"` // Bot
+		Name  string `json:"name,omitempty"`  // Organization or User
+	}
+
 	// Node represents a node in the returned results graph.
 	Node struct {
 		ID                   string `json:"id"`
-		Type                 string `json:"-"`
 		Action               string `json:"action"`
-		ActorLogin           string `json:"actorLogin"`
+		Actor                Actor
 		CreatedAt            string `json:"createdAt"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
 		OrganizationName     string `json:"organizationName,omitempty"`
 		RepositoryName       string `json:"repositoryName,omitempty"`
 		TeamName             string `json:"teamName,omitempty"`
-		UserLogin            string `json:"userLogin,omitempty"`
+		User                 Actor
 		Visibility           string `json:"visibility,omitempty"`
 	}
 
@@ -53,85 +59,135 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 						}
 						... on AuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
-							userLogin
+							user {
+								...userFields
+							}
 						}
 						... on OauthApplicationCreateAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							oauthApplicationName
 							organizationName
 						}
 						... on OrgRemoveMemberAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							organizationName
-							userLogin
+							user {
+								...userFields
+							}
 						}
 						... on RepoAccessAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 							visibility
 						}
 						... on RepoAddMemberAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 						}
 						... on RepoArchivedAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 						}
 						... on RepoCreateAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 							visibility
 						}
 						... on RepoDestroyAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 						}
 						... on RepoRemoveMemberAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
+							user {
+								...userFields
+							}
 						}
 						... on TeamAddRepositoryAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 							teamName
 						}
 						... on TeamRemoveMemberAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							teamName
-							userLogin
+							user {
+								...userFields
+							}
 						}
 						... on TeamRemoveRepositoryAuditEntry {
 							action
-							actorLogin
+							actor {
+								...actorFields
+							}
 							createdAt
 							repositoryName
 							teamName
 						}
 					}
 				}
+			}
+		}
+		fragment userFields on User {
+			__typename
+			login
+			name
+		}
+		fragment actorFields on Actor {
+			__typename
+			... on Bot {
+				login
+			}
+			... on User {
+				...userFields
+			}
+			... on Organization {
+				name
 			}
 		}
 	`)
