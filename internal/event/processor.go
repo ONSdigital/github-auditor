@@ -24,6 +24,8 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		switch e.Action {
 		case "oauth_application.create":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, e.ActorLogin)
+		case "org.remove_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.UserLogin, e.OrganizationName)
 		case "repo.access":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
@@ -36,6 +38,12 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
 		case "repo.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.RepositoryName)
+		case "team.add_repository":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.TeamName, e.RepositoryName)
+		case "team.remove_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.UserLogin, e.TeamName)
+		case "team.remove_repository":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.ActorLogin, e.TeamName, e.RepositoryName)
 		default:
 			log.Printf("Unknown GitHub event: %s", action)
 		}

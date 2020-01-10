@@ -21,6 +21,7 @@ func MessageForEvent(action string) string {
 		"org.oauth_app_access_denied":        "OAuth app *%s* within organisation *%s* had access denied by user *%s*.",
 		"org.oauth_app_access_requested":     "Access to OAuth app *%s* within organisation *%s* was requested by user *%s*.",
 		"org.remove_billing_manager":         "Billing manager *%s* was removed from organisation *%s* because *%s*.",
+		"org.remove_member":                  "User *%s* removed user *%s* from organisation *%s*.",
 
 		// Repo events.
 		"repo.access":        "User *%s* changed visibility of repo *%s* to *%s*.",
@@ -29,6 +30,11 @@ func MessageForEvent(action string) string {
 		"repo.create":        "User *%s* created repo *%s* with visibility *%s*.",
 		"repo.destroy":       "User *%s* deleted repo *%s*.",
 		"repo.remove_member": "User *%s* was removed as a colloborator from repo *%s*.",
+
+		// Team events.
+		"team.add_repository":    "User *%s* gave team *%s* control of repository *%s*.",
+		"team.remove_member":     "User *%s* removed user *%s* from team *%s*.",
+		"team.remove_repository": "User *%s* removed control from team *%s* of repository *%s*.",
 	}
 
 	return eventMap[action]

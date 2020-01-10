@@ -16,9 +16,9 @@ type (
 		CreatedAt            string `json:"createdAt"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
 		OrganizationName     string `json:"organizationName,omitempty"`
-		UserLogin            string `json:"userLogin,omitempty"`
 		RepositoryName       string `json:"repositoryName,omitempty"`
 		TeamName             string `json:"teamName,omitempty"`
+		UserLogin            string `json:"userLogin,omitempty"`
 		Visibility           string `json:"visibility,omitempty"`
 	}
 
@@ -64,6 +64,13 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							oauthApplicationName
 							organizationName
 						}
+						... on OrgRemoveMemberAuditEntry {
+							action
+							actorLogin
+							createdAt
+							organizationName
+							userLogin
+						}
 						... on RepoAccessAuditEntry {
 							action
 							actorLogin
@@ -101,6 +108,27 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							actorLogin
 							createdAt
 							repositoryName
+						}
+						... on TeamAddRepositoryAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+							teamName
+						}
+						... on TeamRemoveMemberAuditEntry {
+							action
+							actorLogin
+							createdAt
+							teamName
+							userLogin
+						}
+						... on TeamRemoveRepositoryAuditEntry {
+							action
+							actorLogin
+							createdAt
+							repositoryName
+							teamName
 						}
 					}
 				}
