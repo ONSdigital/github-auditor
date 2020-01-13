@@ -13,14 +13,6 @@ type (
 		token  string
 		client *graphql.Client
 	}
-
-	// PageInfo represents the pagination information returned from the query.
-	PageInfo struct {
-		StartCursor     string
-		EndCursor       string
-		HasPreviousPage bool
-		HasNextPage     bool
-	}
 )
 
 const endpoint = "https://api.github.com/graphql"

@@ -28,6 +28,14 @@ type (
 		Visibility           string `json:"visibility,omitempty"`
 	}
 
+	// PageInfo represents the pagination information returned from the query.
+	PageInfo struct {
+		StartCursor     string
+		EndCursor       string
+		HasPreviousPage bool
+		HasNextPage     bool
+	}
+
 	// Organization represents a GitHub organisation.
 	Organization struct {
 		AuditLog struct {
