@@ -1,5 +1,5 @@
 # GitHub Auditor
-This repository contains a [Go](https://golang.org/) application that consumes the GitHub audit API and posts Slack alerts for events of interest. A [Cloud Firestore](https://cloud.google.com/firestore/) database is used to store a small amount of state to ensure duplicate alerts aren't created.
+This repository contains a [Go](https://golang.org/) application that consumes the [GitHub audit log API](https://developer.github.com/v4/interface/auditentry/) and posts Slack alerts for events of interest. A [Cloud Firestore](https://cloud.google.com/firestore/) database is used to store a small amount of state to ensure duplicate alerts aren't created.
 
 ## Building
 Use `make` to compile binaries for macOS and Linux.
