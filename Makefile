@@ -10,8 +10,8 @@ MAC_BUILD_ARCH=$(BUILD)/$(OS_MAC)-$(ARCH)
 
 # Cross-compile the binary for Linux and macOS.
 build: clean
-	GOOS=$(OS_LINUX) GOARCH=$(ARCH) go build -o $(LINUX_BUILD_ARCH)/bin/githubauditor cmd/githubauditor/main.go
-	GOOS=$(OS_MAC) GOARCH=$(ARCH) go build -o $(MAC_BUILD_ARCH)/bin/githubauditor cmd/githubauditor/main.go
+	CGO_ENABLED=0 GOOS=$(OS_LINUX) GOARCH=$(ARCH) go build -o $(LINUX_BUILD_ARCH)/bin/githubauditor cmd/githubauditor/main.go
+	CGO_ENABLED=0 GOOS=$(OS_MAC) GOARCH=$(ARCH) go build -o $(MAC_BUILD_ARCH)/bin/githubauditor cmd/githubauditor/main.go
 
 # Remove the build directory tree.
 clean:
