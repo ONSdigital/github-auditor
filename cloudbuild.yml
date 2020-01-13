@@ -1,0 +1,4 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag', 'eu.gcr.io/ons-gcr/github-auditor', '.']
+images: ['eu.gcr.io/ons-gcr/github-auditor']
