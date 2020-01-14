@@ -8,7 +8,7 @@ func MessageForEvent(action string) string {
 		"oauth_application.create": "New OAuth app *%s* was created within organisation *%s* by user *%s*.",
 
 		// Organisation events.
-		"org.add_member":                     "%s accepted an invitation to have collaboration access to repo *%s*.",
+		"org.add_member":                     "%s accepted an invitation from %s to have collaboration access to repo *%s*.",
 		"org.block_user":                     "%s was blocked by %s.",
 		"org.create":                         "Organisation *%s* was created by %s.",
 		"org.disable_saml":                   "SAML was disabled for organisation *%s* by %s.",
@@ -25,13 +25,14 @@ func MessageForEvent(action string) string {
 
 		// Repo events.
 		"repo.access":        "%s changed visibility of repo *%s* to *%s*.",
-		"repo.add_member":    "%s accepted invitation to collaborate on repo *%s*.",
+		"repo.add_member":    "%s accepted invitation from %s to collaborate on repo *%s*.",
 		"repo.archived":      "%s archived repo *%s*.",
 		"repo.create":        "%s created repo *%s* with visibility *%s*.",
 		"repo.destroy":       "%s deleted repo *%s*.",
 		"repo.remove_member": "%s removed %s as a collaborator from repo *%s*.",
 
 		// Team events.
+		"team.add_member":        "%s added %s to team *%s*.",
 		"team.add_repository":    "%s gave team *%s* control of repository *%s*.",
 		"team.remove_member":     "%s removed %s from team *%s*.",
 		"team.remove_repository": "%s removed control from team *%s* of repository *%s*.",

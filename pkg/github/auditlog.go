@@ -84,6 +84,27 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							oauthApplicationName
 							organizationName
 						}
+						... on OrgAddMemberAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							user {
+								...userFields
+							}
+						}
+						... on OrgInviteMemberAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+							user {
+								...userFields
+							}
+						}
 						... on OrgRemoveMemberAuditEntry {
 							action
 							actor {
@@ -111,6 +132,9 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							}
 							createdAt
 							repositoryName
+							user {
+								...userFields
+							}
 						}
 						... on RepoArchivedAuditEntry {
 							action
@@ -144,6 +168,17 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							}
 							createdAt
 							repositoryName
+							user {
+								...userFields
+							}
+						}
+						... on TeamAddMemberAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							teamName
 							user {
 								...userFields
 							}

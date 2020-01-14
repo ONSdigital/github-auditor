@@ -24,12 +24,16 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		switch e.Action {
 		case "oauth_application.create":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor))
+		case "org.add_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
+		case "org.invite_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User), e.OrganizationName, formatActor(e.Actor))
 		case "org.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.OrganizationName)
 		case "repo.access":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
 		case "repo.archived":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
 		case "repo.create":
@@ -38,6 +42,8 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
 		case "repo.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
+		case "team.add_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.TeamName)
 		case "team.add_repository":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.TeamName, e.RepositoryName)
 		case "team.remove_member":
