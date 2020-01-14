@@ -47,8 +47,12 @@ func main() {
 		log.Fatalf("Failed to fetch audit log entries: %v", err)
 	}
 
+	// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
+	fmt.Printf("Audit log API query returned %d results\n", len(events))
+
 	event.Process(events, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL)
 
+	// Dump the results JSON to STDOUT so it can be ingested into SIEM software.
 	json, err := json.MarshalIndent(events, "", "  ")
 	if err != nil {
 		log.Fatal(err)
