@@ -98,7 +98,7 @@ func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL strin
 func formatTime(s string) string {
 	t, err := time.Parse(time.RFC3339, s)
 	if err != nil {
-		log.Fatalf("Unable to parse time '%s': %v", t, err)
+		log.Fatalf("Failed to parse time '%s': %v", t, err)
 	}
 
 	return t.Format("Monday 02 Jan 2006 15:04:05 MST")
