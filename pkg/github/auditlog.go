@@ -20,6 +20,7 @@ type (
 		Action               string `json:"action"`
 		Actor                Actor
 		CreatedAt            string `json:"createdAt"`
+		MergeType            string `json:"mergeType,omitempty"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
 		OrganizationName     string `json:"organizationName,omitempty"`
 		RepositoryName       string `json:"repositoryName,omitempty"`
@@ -142,6 +143,15 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...actorFields
 							}
 							createdAt
+							repositoryName
+						}
+						... on RepoChangeMergeSettingAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							mergeType
 							repositoryName
 						}
 						... on RepoCreateAuditEntry {

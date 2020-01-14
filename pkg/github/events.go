@@ -24,12 +24,13 @@ func MessageForEvent(action string) string {
 		"org.remove_member":                  "%s removed %s from organisation *%s*.",
 
 		// Repo events.
-		"repo.access":        "%s changed visibility of repo *%s* to *%s*.",
-		"repo.add_member":    "%s accepted invitation from %s to collaborate on repo *%s*.",
-		"repo.archived":      "%s archived repo *%s*.",
-		"repo.create":        "%s created repo *%s* with visibility *%s*.",
-		"repo.destroy":       "%s deleted repo *%s*.",
-		"repo.remove_member": "%s removed %s as a collaborator from repo *%s*.",
+		"repo.access":               "%s changed visibility of repo *%s* to *%s*.",
+		"repo.add_member":           "%s accepted invitation from %s to collaborate on repo *%s*.",
+		"repo.archived":             "%s archived repo *%s*.",
+		"repo.change_merge_setting": "%s changed merge setting of repo *%s* to *%s*.",
+		"repo.create":               "%s created repo *%s* with visibility *%s*.",
+		"repo.destroy":              "%s deleted repo *%s*.",
+		"repo.remove_member":        "%s removed %s as a collaborator from repo *%s*.",
 
 		// Team events.
 		"team.add_member":        "%s added %s to team *%s*.",
