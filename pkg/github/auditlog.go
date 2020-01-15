@@ -117,6 +117,17 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...userFields
 							}
 						}
+						... on OrgRemoveOutsideCollaboratorAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+							user {
+								...userFields
+							}
+						}
 						... on RepoAccessAuditEntry {
 							action
 							actor {

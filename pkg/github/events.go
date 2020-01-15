@@ -22,6 +22,7 @@ func MessageForEvent(action string) string {
 		"org.oauth_app_access_requested":     "Access to OAuth app *%s* within organisation *%s* was requested by %s.",
 		"org.remove_billing_manager":         "Billing manager *%s* was removed from organisation *%s* because *%s*.",
 		"org.remove_member":                  "%s removed %s from organisation *%s*.",
+		"org.remove_outside_collaborator":    "%s removed %s as an outside collaborator from organisation *%s*.",
 
 		// Repo events.
 		"repo.access":               "%s changed visibility of repo *%s* to *%s*.",
