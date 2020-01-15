@@ -23,6 +23,7 @@ func MessageForEvent(action string) string {
 		"org.remove_billing_manager":         "Billing manager *%s* was removed from organisation *%s* because *%s*.",
 		"org.remove_member":                  "%s removed %s from organisation *%s*.",
 		"org.remove_outside_collaborator":    "%s removed %s as an outside collaborator from organisation *%s*.",
+		"org.update_member":                  "%s changed the role of %s from *%s* to *%s* in organisation *%s*.",
 
 		// Repo events.
 		"repo.access":               "%s changed visibility of repo *%s* to *%s*.",

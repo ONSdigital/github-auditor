@@ -36,6 +36,8 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User), e.OrganizationName, formatActor(e.Actor))
 		case "org.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.OrganizationName)
+		case "org.update_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), strings.ToLower(e.PermissionWas), strings.ToLower(e.Permission), e.OrganizationName)
 
 		// Repo events.
 		case "repo.access":
