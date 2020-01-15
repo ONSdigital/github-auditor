@@ -47,7 +47,7 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		case "org.enable_two_factor_requirement":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
 		case "org.invite_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User, true), e.OrganizationName, formatActor(e.Actor, false))
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.OrganizationName, formatActor(e.User, false))
 		case "org.oauth_app_access_approved":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
 		case "org.oauth_app_access_denied":
