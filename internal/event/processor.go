@@ -117,7 +117,7 @@ func formatActor(actor github.Actor, capitalise bool) string {
 	case "Organization":
 		actorName = fmt.Sprintf("org *%s*", actor.Name)
 		if capitalise {
-			actorName = fmt.Sprintf("Bot *%s*", actor.Login)
+			actorName = fmt.Sprintf("Org *%s*", actor.Name)
 		}
 
 	case "User":
