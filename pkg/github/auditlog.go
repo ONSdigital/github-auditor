@@ -98,6 +98,7 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							user {
 								...userFields
 							}
+						}
 						... on OrgAddMemberAuditEntry {
 							action
 							actor {
