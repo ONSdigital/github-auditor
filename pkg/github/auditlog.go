@@ -114,7 +114,9 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							actor {
 								...actorFields
 							}
-							blockedUser
+							blockedUser {
+								...userFields
+							}
 							createdAt
 							organizationName
 						}
