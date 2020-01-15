@@ -25,7 +25,7 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 
 		// OAuth events.
 		case "oauth_application.create":
-			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor))
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
 
 		// Organisation events.
 		case "org.add_member":
