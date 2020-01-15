@@ -29,41 +29,41 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 
 		// Organisation events.
 		case "org.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
 		case "org.remove_outside_collaborator":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.OrganizationName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.invite_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User), e.OrganizationName, formatActor(e.Actor))
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User, true), e.OrganizationName, formatActor(e.Actor, false))
 		case "org.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.OrganizationName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.update_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), strings.ToLower(e.PermissionWas), strings.ToLower(e.Permission), e.OrganizationName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), strings.ToLower(e.PermissionWas), strings.ToLower(e.Permission), e.OrganizationName)
 
 		// Repo events.
 		case "repo.access":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.Visibility))
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
 		case "repo.archived":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName)
 		case "repo.change_merge_setting":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.MergeType))
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.MergeType))
 		case "repo.create":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName, strings.ToLower(e.Visibility))
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.destroy":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName)
 		case "repo.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
 
 		// Team events.
 		case "team.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.TeamName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.TeamName)
 		case "team.add_repository":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.TeamName, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TeamName, e.RepositoryName)
 		case "team.remove_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), formatActor(e.User), e.TeamName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.TeamName)
 		case "team.remove_repository":
-			text = fmt.Sprintf(github.MessageForEvent(action), strings.Title(formatActor(e.Actor)), e.TeamName, e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TeamName, e.RepositoryName)
 		default:
 			log.Printf("Unknown GitHub event: %s", action)
 		}
@@ -80,16 +80,27 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 	}
 }
 
-func formatActor(actor github.Actor) string {
+func formatActor(actor github.Actor, capitalise bool) string {
 	actorName := ""
 
 	switch actor.Type {
 	case "Bot":
 		actorName = fmt.Sprintf("bot *%s*", actor.Login)
+		if capitalise {
+			actorName = fmt.Sprintf("Bot *%s*", actor.Login)
+		}
+
 	case "Organization":
 		actorName = fmt.Sprintf("org *%s*", actor.Name)
+		if capitalise {
+			actorName = fmt.Sprintf("Bot *%s*", actor.Login)
+		}
+
 	case "User":
 		actorName = fmt.Sprintf("user *%s*", actor.Login)
+		if capitalise {
+			actorName = fmt.Sprintf("User *%s*", actor.Login)
+		}
 
 		if len(actor.Name) > 0 {
 			actorName = fmt.Sprintf("%s (%s)", actorName, actor.Name)
