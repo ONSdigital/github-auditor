@@ -19,6 +19,7 @@ type (
 		ID                   string `json:"id"`
 		Action               string `json:"action"`
 		Actor                Actor
+		BlockedUser          Actor
 		CreatedAt            string `json:"createdAt"`
 		MergeType            string `json:"mergeType,omitempty"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
@@ -87,6 +88,16 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							oauthApplicationName
 							organizationName
 						}
+						... on OrgAddBillingManagerAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+							user {
+								...userFields
+							}
 						... on OrgAddMemberAuditEntry {
 							action
 							actor {
@@ -97,7 +108,102 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...userFields
 							}
 						}
+						... on OrgBlockUserAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							blockedUser
+							createdAt
+							organizationName
+						}
+						... on OrgCreateAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
+						... on OrgDisableSamlAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
+						... on OrgDisableTwoFactorRequirementAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
+						... on OrgEnableOauthAppRestrictionsAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
+						... on OrgEnableSamlAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
+						... on OrgEnableTwoFactorRequirementAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+						}
 						... on OrgInviteMemberAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							organizationName
+							user {
+								...userFields
+							}
+						}
+						... on OrgOauthAppAccessApprovedAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							oauthApplicationName
+							organizationName
+						}
+						... on OrgOauthAppAccessDeniedAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							oauthApplicationName
+							organizationName
+						}
+						... on OrgOauthAppAccessRequestedAuditEntry {
+							action
+							actor {
+								...actorFields
+							}
+							createdAt
+							oauthApplicationName
+							organizationName
+						}
+						... on OrgRemoveBillingManagerAuditEntry {
 							action
 							actor {
 								...actorFields

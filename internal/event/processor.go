@@ -28,13 +28,37 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
 
 		// Organisation events.
+		case "org.add_billing_manager":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.add_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
-		case "org.remove_outside_collaborator":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
+		case "org.block_user":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.BlockedUser, true), formatActor(e.Actor, false), e.OrganizationName)
+		case "org.create":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.disable_saml":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.disable_two_factor_requirement":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.enable_oauth_app_restrictions":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.enable_saml":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.enable_two_factor_requirement":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
 		case "org.invite_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User, true), e.OrganizationName, formatActor(e.Actor, false))
+		case "org.oauth_app_access_approved":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
+		case "org.oauth_app_access_denied":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
+		case "org.oauth_app_access_requested":
+			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
+		case "org.remove_billing_manager":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.remove_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
+		case "org.remove_outside_collaborator":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.update_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), strings.ToLower(e.PermissionWas), strings.ToLower(e.Permission), e.OrganizationName)

@@ -8,8 +8,9 @@ func MessageForEvent(action string) string {
 		"oauth_application.create": "New OAuth app *%s* was created within organisation *%s* by user *%s*.",
 
 		// Organisation events.
+		"org.add_billing_manager":            "%s added %s as billing manager for organisation *%s*.",
 		"org.add_member":                     "%s accepted an invitation from %s to have collaboration access to repo *%s*.",
-		"org.block_user":                     "%s was blocked by %s.",
+		"org.block_user":                     "%s was blocked by %s in organisation *%s*.",
 		"org.create":                         "Organisation *%s* was created by %s.",
 		"org.disable_saml":                   "SAML was disabled for organisation *%s* by %s.",
 		"org.disable_two_factor_requirement": "Two-factor authentication was disabled for organisation *%s* by %s.",
@@ -20,7 +21,7 @@ func MessageForEvent(action string) string {
 		"org.oauth_app_access_approved":      "OAuth app *%s* within organisation *%s* had access approved by %s.",
 		"org.oauth_app_access_denied":        "OAuth app *%s* within organisation *%s* had access denied by %s.",
 		"org.oauth_app_access_requested":     "Access to OAuth app *%s* within organisation *%s* was requested by %s.",
-		"org.remove_billing_manager":         "Billing manager *%s* was removed from organisation *%s* because *%s*.",
+		"org.remove_billing_manager":         "%s removed %s as billing manager from organisation *%s*.",
 		"org.remove_member":                  "%s removed %s from organisation *%s*.",
 		"org.remove_outside_collaborator":    "%s removed %s as an outside collaborator from organisation *%s*.",
 		"org.update_member":                  "%s changed the role of %s from *%s* to *%s* in organisation *%s*.",
