@@ -100,7 +100,6 @@ func formatActor(actor github.Actor) string {
 }
 
 func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {
-	fmt.Printf("Posting Slack message: %s\n", text)
 	payload := slack.Payload{
 		Text:      fmt.Sprintf("_%s_\n%s\n\n", timestamp, text),
 		Username:  "GitHub Auditor Bot",
