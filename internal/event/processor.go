@@ -89,7 +89,9 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		case "team.remove_repository":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TeamName, e.RepositoryName)
 		default:
-			log.Printf("Unknown GitHub event: %s", action)
+
+			// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
+			fmt.Printf("Unknown GitHub event: %s", action)
 		}
 
 		client := firestore.NewClient(firestoreProject, firestoreCredentials)
