@@ -91,7 +91,7 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		default:
 
 			// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
-			fmt.Printf("Unknown GitHub event: %s", action)
+			fmt.Printf("Unknown GitHub event: %s\n", action)
 		}
 
 		client := firestore.NewClient(firestoreProject, firestoreCredentials)
