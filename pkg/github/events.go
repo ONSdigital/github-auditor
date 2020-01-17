@@ -11,7 +11,7 @@ func MessageForEvent(action string) string {
 
 		// Organisation events.
 		"org.add_billing_manager":            "%s added %s as billing manager for organisation *%s*.",
-		"org.add_member":                     "%s invited %s to have collaboration access to repo *%s*.",
+		"org.add_member":                     "%s accepted invitation to join organisation *%s*.",
 		"org.block_user":                     "%s was blocked by %s in organisation *%s*.",
 		"org.create":                         "Organisation *%s* was created by %s.",
 		"org.disable_saml":                   "SAML was disabled for organisation *%s* by %s.",

@@ -31,7 +31,7 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		case "org.add_billing_manager":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.add_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.User, true), e.OrganizationName)
 		case "org.block_user":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.BlockedUser, true), formatActor(e.Actor, false), e.OrganizationName)
 		case "org.create":
