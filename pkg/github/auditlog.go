@@ -105,6 +105,7 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...actorFields
 							}
 							createdAt
+							organizationName
 							user {
 								...userFields
 							}
