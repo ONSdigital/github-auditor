@@ -21,6 +21,7 @@ type (
 		Actor                Actor
 		BlockedUser          Actor
 		CreatedAt            string `json:"createdAt"`
+		Email                string `json:"email,omitempty"`
 		MergeType            string `json:"mergeType,omitempty"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
 		OrganizationName     string `json:"organizationName,omitempty"`
@@ -175,6 +176,7 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...actorFields
 							}
 							createdAt
+							email
 							organizationName
 							user {
 								...userFields

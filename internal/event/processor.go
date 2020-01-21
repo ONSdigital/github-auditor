@@ -47,7 +47,7 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 		case "org.enable_two_factor_requirement":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OrganizationName, formatActor(e.Actor, false))
 		case "org.invite_member":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActorOrEmail(e.User, e.Email, false), e.OrganizationName)
 		case "org.oauth_app_access_approved":
 			text = fmt.Sprintf(github.MessageForEvent(action), e.OauthApplicationName, e.OrganizationName, formatActor(e.Actor, false))
 		case "org.oauth_app_access_denied":
@@ -134,6 +134,14 @@ func formatActor(actor github.Actor, capitalise bool) string {
 	}
 
 	return actorName
+}
+
+func formatActorOrEmail(actor github.Actor, email string, capitalise bool) string {
+	if len(email) > 0 {
+		return fmt.Sprintf("*%s*", email)
+	}
+
+	return formatActor(actor, capitalise)
 }
 
 func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {
