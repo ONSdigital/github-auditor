@@ -3,6 +3,7 @@ package github
 import (
 	"github.com/ONSdigital/graphql"
 	"github.com/pkg/errors"
+	"sort"
 )
 
 type (
@@ -51,7 +52,7 @@ type (
 	}
 )
 
-// FetchAllAuditEvents returns all audit log events for the passed organisation.
+// FetchAllAuditEvents returns all audit log events for the passed organisation. The returned logs are sorted by their createdAt timestamp.
 func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err error) {
 	var endCursor *string // Using a pointer type allows this to be nil (an empty string isn't a valid cursor).
 
@@ -402,6 +403,10 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 		endCursor = &res.Organization.AuditLog.PageInfo.EndCursor
 		hasNextPage = res.Organization.AuditLog.PageInfo.HasNextPage
 	}
+
+	sort.SliceStable(nodes, func(i, j int) bool {
+		return nodes[i].CreatedAt < nodes[j].CreatedAt
+	})
 
 	return nodes, nil
 }
