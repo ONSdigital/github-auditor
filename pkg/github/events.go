@@ -7,7 +7,7 @@ func MessageForEvent(action string) string {
 	eventMap := map[string]string{
 
 		// OAuth events.
-		"oauth_application.create": "New OAuth app *%s* was created within organisation *%s* by user *%s*.",
+		"oauth_application.create": "New OAuth app *%s* was created within organisation *%s* by %s.",
 
 		// Organisation events.
 		"org.add_billing_manager":            "%s added %s as billing manager for organisation *%s*.",
