@@ -1,9 +1,10 @@
 package github
 
 import (
+	"sort"
+
 	"github.com/ONSdigital/graphql"
 	"github.com/pkg/errors"
-	"sort"
 )
 
 type (
@@ -59,7 +60,7 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 	req := graphql.NewRequest(`
 		query GitHubAuditEntries($login: String!, $after: String) {
 			organization(login: $login) {
-				auditLog(first: 100, after: $after) {
+				auditLog(first: 50, after: $after) {
 					totalCount
 					pageInfo {
 						startCursor
