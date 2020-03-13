@@ -23,8 +23,23 @@ type (
 
 const firestoreCollection = "github-auditor"
 
-// NewClient instantiates a new Firestore client for the passed GCP project using the passed path to a JSON service account key file.
-func NewClient(projectID, credentialsFile string) *Client {
+// NewClient instantiates a new Firestore client for the passed GCP project.
+func NewClient(projectID string) *Client {
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to instantiate Firestore client in project %s: %v", projectID, err)
+	}
+
+	return &Client{
+		projectID: projectID,
+		context:   &ctx,
+		client:    client,
+	}
+}
+
+// NewClientWithCredentials instantiates a new Firestore client for the passed GCP project using the passed path to a JSON service account key file.
+func NewClientWithCredentials(projectID, credentialsFile string) *Client {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(credentialsFile))
 	if err != nil {
