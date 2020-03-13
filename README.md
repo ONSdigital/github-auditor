@@ -9,12 +9,17 @@ Use `make` to compile binaries for macOS and Linux.
 The environment variables below are required:
 
 ```
-FIRESTORE_CREDENTIALS # Path to the GCP service account JSON key
 FIRESTORE_PROJECT     # Name of the GCP project containing the Firestore project
 GITHUB_ORG_NAME       # Name of the GitHub Enterprise organisation
 GITHUB_TOKEN          # GitHub personal access token
 SLACK_ALERTS_CHANNEL  # Name of the Slack channel to post alerts to
 SLACK_WEBHOOK         # Used for accessing the Slack Incoming Webhooks API
+```
+
+The environment variable below is optional:
+
+```
+FIRESTORE_CREDENTIALS # Path to the GCP service account JSON key (used when running locally)
 ```
 
 ### Token Scopes
