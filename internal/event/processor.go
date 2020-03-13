@@ -14,7 +14,16 @@ import (
 const slackRateLimitPause = 5 * time.Second
 
 // Process processes the passed slice of GitHub audit events, creating Slack alerts in the passed Slack channel for events of interest.
-func Process(events []github.Node, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL string) {
+func Process(events []github.Node, firestoreProject, slackAlertsChannel, slackWebHookURL string) {
+	process(events, nil, firestoreProject, slackAlertsChannel, slackWebHookURL)
+}
+
+// ProcessWithCredentials processes the passed slice of GitHub audit events, creating Slack alerts in the passed Slack channel for events of interest.
+func ProcessWithCredentials(events []github.Node, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL string) {
+	process(events, &firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL)
+}
+
+func process(events []github.Node, firestoreCredentials *string, firestoreProject, slackAlertsChannel, slackWebHookURL string) {
 	for _, e := range events {
 		timestamp := formatTime(e.CreatedAt)
 		id := e.ID
@@ -94,7 +103,14 @@ func Process(events []github.Node, firestoreCredentials, firestoreProject, slack
 			fmt.Printf("Unknown GitHub event: %s\n", action)
 		}
 
-		client := firestore.NewClient(firestoreProject, firestoreCredentials)
+		var client *firestore.Client
+
+		if firestoreCredentials != nil {
+			client = firestore.NewClientWithCredentials(firestoreProject, *firestoreCredentials)
+		} else {
+			client = firestore.NewClient(firestoreProject)
+		}
+
 		if !client.DocExists(id, timestamp, action) && len(text) > 0 {
 			postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL)
 		}
