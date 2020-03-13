@@ -11,10 +11,7 @@ import (
 )
 
 func main() {
-	firestoreCredentials := ""
-	if firestoreCredentials = os.Getenv("FIRESTORE_CREDENTIALS"); len(firestoreCredentials) == 0 {
-		log.Fatal("Missing FIRESTORE_CREDENTIALS environment variable")
-	}
+	firestoreCredentials := os.Getenv("FIRESTORE_CREDENTIALS")
 
 	firestoreProject := ""
 	if firestoreProject = os.Getenv("FIRESTORE_PROJECT"); len(firestoreProject) == 0 {
@@ -50,7 +47,11 @@ func main() {
 	// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
 	fmt.Printf("Audit log API query returned %d results\n", len(events))
 
-	event.Process(events, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL)
+	if len(firestoreCredentials) > 0 {
+		event.ProcessWithCredentials(events, firestoreCredentials, firestoreProject, slackAlertsChannel, slackWebHookURL)
+	} else {
+		event.Process(events, firestoreProject, slackAlertsChannel, slackWebHookURL)
+	}
 
 	// Dump the results JSON to STDOUT so it can be ingested into SIEM software.
 	json, err := json.MarshalIndent(events, "", "  ")
