@@ -61,6 +61,10 @@ func (c Client) DocExists(id, timestamp, action string) bool {
 		return false
 	}
 
+	if snapshot == nil {
+		return false
+	}
+
 	data := snapshot.Data()
 	if data == nil {
 		return false
