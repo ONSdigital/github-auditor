@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -52,11 +51,4 @@ func main() {
 	} else {
 		event.Process(events, firestoreProject, slackAlertsChannel, slackWebHookURL)
 	}
-
-	// Dump the results JSON to STDOUT so it can be ingested into SIEM software.
-	json, err := json.MarshalIndent(events, "", "  ")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("%s\n", json)
 }

@@ -112,6 +112,7 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 		}
 
 		if !client.DocExists(id, timestamp, action) && len(text) > 0 {
+			logSlackMessage(timestamp, text)
 			postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL)
 		}
 
@@ -158,6 +159,12 @@ func formatActorOrEmail(actor github.Actor, email string, capitalise bool) strin
 	}
 
 	return formatActor(actor, capitalise)
+}
+
+func logSlackMessage(timestamp, text string) {
+
+	// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
+	fmt.Printf("%s occurred at %s\n", text, timestamp)
 }
 
 func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {
