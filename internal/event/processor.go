@@ -80,7 +80,13 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 		case "repo.archived":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName)
 		case "repo.change_merge_setting":
-			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.MergeType))
+
+			// A repo.change_merge_setting event is fired with a null merge setting when a new repo is created, so only log explicit merge setting changes.
+			if len(e.MergeType) > 0 {
+				text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.MergeType))
+			} else {
+				text = ""
+			}
 		case "repo.create":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.destroy":
