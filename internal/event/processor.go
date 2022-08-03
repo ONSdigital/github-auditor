@@ -1,6 +1,7 @@
 package event
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"strings"
@@ -29,6 +30,10 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 		id := e.ID
 		action := e.Action
 		text := ""
+		jsonData, err := json.Marshal(e)
+		if err != nil {
+			log.Fatalf("Failed marshalling event to JSON: %v", err)
+		}
 
 		switch e.Action {
 
@@ -118,11 +123,11 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 		}
 
 		if !client.DocExists(id, timestamp, action) && len(text) > 0 {
-			logSlackMessage(timestamp, text)
+			logJSON(jsonData)
 			postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL)
 		}
 
-		err := client.SaveDoc(id, timestamp, action)
+		err = client.SaveDoc(id, timestamp, action)
 		if err != nil {
 			log.Fatalf("Failed to save document to Firestore: %v", err)
 		}
@@ -167,10 +172,10 @@ func formatActorOrEmail(actor github.Actor, email string, capitalise bool) strin
 	return formatActor(actor, capitalise)
 }
 
-func logSlackMessage(timestamp, text string) {
+func logJSON(jsonData []byte) {
 
 	// Using fmt rather than log so the output goes to STDOUT rather than STDERR.
-	fmt.Printf("%s Occurred %s.\n", text, timestamp)
+	fmt.Println(string(jsonData))
 }
 
 func postSlackMessage(timestamp, text, slackAlertsChannel, slackWebHookURL string) {
