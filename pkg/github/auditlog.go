@@ -31,6 +31,7 @@ type (
 		PermissionWas        string `json:"permissionWas,omitempty"`
 		RepositoryName       string `json:"repositoryName,omitempty"`
 		TeamName             string `json:"teamName,omitempty"`
+		TopicName            string `json:"topicName,omitempty"`
 		User                 Actor
 		Visibility           string `json:"visibility,omitempty"`
 	}
@@ -287,6 +288,15 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							user {
 								...userFields
 							}
+						}
+						... on RepoAddTopicAuditEntry {
+							action
+							actor {
+							  ...actorFields
+							}
+							createdAt
+							repositoryName
+							topicName
 						}
 						... on RepoArchivedAuditEntry {
 							action

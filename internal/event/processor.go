@@ -84,6 +84,8 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName, strings.ToLower(e.Visibility))
 		case "repo.add_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.RepositoryName)
+		case "repo.add_topic":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TopicName, e.RepositoryName)
 		case "repo.archived":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.RepositoryName)
 		case "repo.change_merge_setting":

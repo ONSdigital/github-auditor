@@ -32,6 +32,7 @@ func MessageForEvent(action string) string {
 		// Repo events.
 		"repo.access":               "%s changed the visibility of repo *%s* to *%s*.",
 		"repo.add_member":           "%s invited %s to collaborate on repo *%s*.",
+		"repo.add_topic":            "%s added topic(s) *%s* to repo *%s*.",
 		"repo.archived":             "%s archived repo *%s*.",
 		"repo.change_merge_setting": "%s changed the merge setting of repo *%s* to *%s*.",
 		"repo.create":               "%s created repo *%s* with visibility *%s*.",
