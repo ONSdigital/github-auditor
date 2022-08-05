@@ -40,10 +40,11 @@ func MessageForEvent(action string) string {
 		"repo.remove_member":        "%s removed %s as a collaborator from repo *%s*.",
 
 		// Team events.
-		"team.add_member":        "%s added %s to team *%s*.",
-		"team.add_repository":    "%s gave team *%s* control of repository *%s*.",
-		"team.remove_member":     "%s removed %s from team *%s*.",
-		"team.remove_repository": "%s removed control from team *%s* of repository *%s*.",
+		"team.add_member":         "%s added %s to team *%s*.",
+		"team.add_repository":     "%s gave team *%s* control of repository *%s*.",
+		"team.change_parent_team": "%s changed parent team of team *%s* to *%s*",
+		"team.remove_member":      "%s removed %s from team *%s*.",
+		"team.remove_repository":  "%s removed control from team *%s* of repository *%s*.",
 	}
 
 	return eventMap[action]

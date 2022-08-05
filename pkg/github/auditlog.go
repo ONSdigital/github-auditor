@@ -27,6 +27,7 @@ type (
 		MergeType            string `json:"mergeType,omitempty"`
 		OauthApplicationName string `json:"oauthApplicationName,omitempty"`
 		OrganizationName     string `json:"organizationName,omitempty"`
+		ParentTeamName       string `json:"parentTeamName,omitempty"`
 		Permission           string `json:"permission,omitempty"`
 		PermissionWas        string `json:"permissionWas,omitempty"`
 		RepositoryName       string `json:"repositoryName,omitempty"`
@@ -361,6 +362,15 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 							}
 							createdAt
 							repositoryName
+							teamName
+						}
+						... on TeamChangeParentTeamAuditEntry {
+							action
+							actor {
+							  ...actorFields
+							}
+							createdAt
+							parentTeamName
 							teamName
 						}
 						... on TeamRemoveMemberAuditEntry {

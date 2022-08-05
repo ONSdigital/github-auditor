@@ -108,6 +108,8 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.TeamName)
 		case "team.add_repository":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TeamName, e.RepositoryName)
+		case "team.change_parent_team":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), e.TeamName, e.ParentTeamName)
 		case "team.remove_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.TeamName)
 		case "team.remove_repository":
