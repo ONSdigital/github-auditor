@@ -42,7 +42,7 @@ func MessageForEvent(action string) string {
 		// Team events.
 		"team.add_member":         "%s added %s to team *%s*.",
 		"team.add_repository":     "%s gave team *%s* control of repository *%s*.",
-		"team.change_parent_team": "%s changed parent team of team *%s* to *%s*",
+		"team.change_parent_team": "%s changed parent team of team *%s* to *%s*.",
 		"team.remove_member":      "%s removed %s from team *%s*.",
 		"team.remove_repository":  "%s removed control from team *%s* of repository *%s*.",
 	}
