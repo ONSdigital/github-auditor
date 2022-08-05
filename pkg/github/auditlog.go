@@ -244,6 +244,17 @@ func (c Client) FetchAllAuditEvents(organisation string) (events []Node, err err
 								...userFields
 							}
 						}
+						... on OrgRestoreMemberAuditEntry {
+							action
+							actor {
+							  ...actorFields
+							}
+							createdAt
+							user {
+								...userFields
+							}
+							organizationName
+						  }
 						... on OrgUpdateMemberAuditEntry {
 							action
 							actor {

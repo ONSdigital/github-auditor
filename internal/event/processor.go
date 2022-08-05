@@ -74,6 +74,8 @@ func process(events []github.Node, firestoreCredentials *string, firestoreProjec
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.remove_outside_collaborator":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
+		case "org.restore_member":
+			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), e.OrganizationName)
 		case "org.update_member":
 			text = fmt.Sprintf(github.MessageForEvent(action), formatActor(e.Actor, true), formatActor(e.User, false), strings.ToLower(e.PermissionWas), strings.ToLower(e.Permission), e.OrganizationName)
 
