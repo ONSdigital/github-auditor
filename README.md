@@ -25,7 +25,6 @@ FIRESTORE_CREDENTIALS # Path to the GCP service account JSON key (used when runn
 ### Token Scopes
 The GitHub personal access token for using this application requires the following scopes:
 
-- `admin:enterprise`
 - `admin:org`
 - `repo`
 - `user`
